@@ -1,0 +1,10 @@
+39a552e3530e6ef1974297395ca50304 *DESCRIPTION
+19407cfcc4ad22002e5476daa4d59ad4 *NAMESPACE
+1b2af2ebb5c2a64b9c74ba7cbbed584f *R/convevol-package.r
+5e118e4700aa890759ce94e127a17a90 *R/convnum.R
+3c9100ebabf6c818a4ea05ce46514013 *R/convnumsig.R
+8b73fe6111f67c1b1021ab288adfb899 *R/multianc.R
+9f4928549d5061077ad7d9629bcbcb31 *man/convevol.Rd
+2cf1255af7adfc84a1c282deab1c4cc0 *man/convnum.Rd
+98b444a0ff2a1e9dc28387ddc5ea1f85 *man/convnumsig.Rd
+6a98f26805160638274db570b5af134e *man/multianc.Rd
