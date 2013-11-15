@@ -1,3 +1,6 @@
+import(cluster, phytools)
+importFrom(MASS, ginv)
+importFrom(geiger, sim.char)
 export(convnum)
 export(convnumsig)
 export(multianc)
