@@ -9,6 +9,8 @@
 #'
 #'@return A matrix with the tips data in the first n rows and the ancestral data in the remaining n-1 rows.  
 #'
+#'@import ape geiger MASS phytools
+#'
 #'@export
 #'
 #'@references Paradis, E., J. Claude, and K. Strimmer (2004) APE: Analyses of phylogenetics
@@ -16,7 +18,6 @@
 #'
 #'Revell, L. J. (2012) phytools: An R package for phylogenetic comparative 
 #'biology (and other things). Methods Ecol. Evol. 3 217-223.
-
 #'
 #'@examples
 #'
@@ -30,10 +31,22 @@
 
 multianc<-function(phyl,phendata)
 
-#A simple function that reconstructs ancestral states for multiple phenotypic
-#characters.
-
 {
+
+#Error checking
+
+if (class(phyl) != "phylo") 
+	stop("your tree must be class 'phylo.'")
+
+if (nrow(phendata) != length(phyl$tip)) 
+	stop("your data matrix must have the same number of rows as tips in the tree.")
+    
+if (is.null(rownames(phendata))) {
+	warning("no row names for data.  Assuming that the rows are in the same order as tips.")
+      rownames(X) <- phyl$tip.label
+	}
+
+#The function
 
 firstvar<-fastAnc(phyl,phendata[, 1])
 

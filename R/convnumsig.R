@@ -6,10 +6,17 @@
 #'@param phendata Phenotypic data for all tips
 #'@param convtips A list consisting of the names of all convergent taxa
 #'@param nsim The number of simulatons to conduct
+#'@param ellipse Optional.  An ellipse defining the region of interest, into which groups may or may not converge.
+#'@param plot Optional.  Describes whether or not to show phylomorphospaces for all of the simulations.  
+#'@param plotellipse Optional.  The ellipse defining the region of interest in the first two dimensions.  
 #'
 #'@details None
 #'
 #'@return A list, consisting first of the p-value for the observed convnum, and second of a vector containing all of the simulated convnum values.  Also displays a histogram of all of the simulated convnum values.
+#'
+#'@import ape geiger MASS phytools 
+#'
+#'@importFrom cluster ellipsoidhull
 #'
 #'@export
 #'
@@ -21,112 +28,81 @@
 #'
 #'Revell, L. J. (2012) phytools: An R package for phylogenetic comparative 
 #'biology (and other things). Methods Ecol. Evol. 3 217-223.
-
 #'
 #'@examples
 #'
 #'phyl<-rtree(10)
 #'phendata<-fastBM(phyl,nsim=2)
 #'convtips<-c("t1","t2","t3")
-#'answer<-convnumsig(phyl,phendata,convtips,10)
+#'answer<-convnumsig(phyl,phendata,convtips,10,plot=FALSE,ellipse=NULL,plotellipse=NULL)
 
-convnumsig<-function(phyl,phendata,convtips,nsim)
-
-#Evaluates the significance of convergence as measured by convnum.  
+convnumsig<-function(phyl,phendata,convtips,nsim,ellipse=NULL,plot=FALSE,plotellipse=NULL)
 
 {
 
-#Then the observed value, and the ellipse.
+#Error checking
 
-phendata<-as.matrix(phendata)
+if (class(phyl) != "phylo") 
+	stop("your tree must be class 'phylo.'")
 
-convtaxa<-phendata[unlist(convtips) ,]
+if (nrow(phendata) != length(phyl$tip)) 
+	stop("your data matrix must have the same number of rows as tips in the tree.")
+    
+if (is.list(convtips)==TRUE) {convtips<-unlist(convtips)} 
 
-convell<-ellipsoidhull(convtaxa,0.0001)
+if (length(convtips)<=ncol(phendata)) 
+	stop("You must have fewer variables than putatively convergent taxa")
 
-ob<-convnum(phyl,phendata,convtips)
+
+#The function.  First the observed value
+
+ob<-convnum(phyl,phendata,convtips,plot=TRUE,ellipse=NULL)
+
+if (is.null(ellipse)) {convell<-ob[[2]]}
+else {convell<-ellipse}
+
+if (is.null(plotellipse)) {plotell<-ob[[3]]}
+else {plotell<-plotellipse}
 
 #Then the simulations
 
-ancvals<-multianc(phyl,phendata)
+#ancvals<-multianc(phyl,phendata)
 
-rootvals<-ancvals[length(phyl$tip.label) ,]
+#rootvals<-ancvals[length(phyl$tip.label)+1 ,]
 
 C<-vcv.phylo(phyl)
 
+phendata<-as.matrix(phendata)
+
 vcv<-phyl.vcv(phendata,C,0)
 
-simdata<-sim.char(phyl,vcv$R,nsim,model=c("BM"),root=rootvals)
+rootrow<-dim(phendata)[1]+1
+
+rootvals<-multianc(phyl,phendata)[rootrow,]
+
+simdata<-sim.char(phyl,vcv$R,nsim,model=c("BM"),root=0)
+
+#simdata<-simdata+rootvals
 
 #And then all of the assessments of those simulations
 
-sobs<-c()
-moresig<-0
+sobs<-NULL
+greater<-0
 
-nbran<-dim(phyl$edge)
+i<-1
 
-for (i in 1:nsim) {
-
-	sphendata<-simdata[, , i]
-
-	salldata<-multianc(phyl,sphendata)
-
-	#phylomorphospace(phyl,sphendata)
-
-	#plotellipse(convell)
-
-	cross<-0
-
-	j<-1
-
-	while (j<=nbran[1]) {
-
-		isinanc=FALSE
-		isindes=FALSE
+while (i<=nsim) {
 	
-		anc<-phyl$edge[j,1]
-		des<-phyl$edge[j,2]
-
-		ancval<-salldata[anc ,]
-		desval<-salldata[des ,]
-
-		ancdev<-ancval-convell$loc
-		desdev<-desval-convell$loc
-
-		cutoff<-1.00*convell$d2  #cutoff<-(1+tol)*convell$d2
-
-		if (t(ancdev)%*%ginv(convell$cov)%*%ancdev<=cutoff) {isinanc=TRUE}else{isinanc=FALSE}
-
-		if (t(desdev)%*%ginv(convell$cov)%*%desdev<=cutoff) {isindes=TRUE}else{isindes=FALSE}
-
-		if (isinanc!=TRUE & isindes==TRUE) {
-
-			cross<-cross+1
-
-			#And we'll highlight those branches in red.
-
-			#pts<-rbind(ancval[1:2],desval[1:2])
-
-			#lines(pts,col="red")
-
-			#arrows(ancval[1],ancval[2],desval[1],desval[2],length=0.1,angle=30,code=2,col="red")
-
-			}
-
-		j<-j+1
-
-		}
-	
-	if(cross>=ob) {moresig<-moresig+1}
-	
-	sobs<-c(sobs,cross)
-
+	simphen<-simdata[, , i]
+	simval<-convnum(phyl,simphen,convtips,plot=plot,ellipse=convell,plotellipse=plotell)
+	sobs<-c(sobs,simval[[1]])
+	if(simval[[1]]>=ob[[1]]) {greater<-greater+1}
+	i<-i+1	
 	}
 
 hist(sobs)
 
-p<-moresig/nsim
+p<-greater/nsim
 
 all<-list(p,sobs)
 }
-		
