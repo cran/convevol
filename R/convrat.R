@@ -8,9 +8,7 @@
 #'
 #'@details  C1 = 1-(dtip/dmax).  C2 = dmax-dtip.  C3 is C2 scaled by the total amount of evolution that has occured in the clade descendend from the most recent common ancestor of all convergent tips.  C4 is C2 scaled by the total amount of evolution in the phylogeny.  This program assumes that all monophyletic clades composed entirely of putatively convergent taxa have been reduced to averages or representative taxa.   
 #'
-#'@return C1, C2, C3, and C4 
-#'
-#'@import ape geiger MASS phytools  
+#'@return C1, C2, C3, and C4   
 #'
 #'@export
 #'

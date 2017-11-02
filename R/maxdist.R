@@ -11,7 +11,7 @@
 #'
 #'@return The maximum phenotypic distance between the two taxa
 #'
-#'@import ape geiger MASS phytools
+#'@import ape geiger MASS phytools stats
 #'
 #'@export
 #'

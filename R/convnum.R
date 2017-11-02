@@ -13,7 +13,7 @@
 #'
 #'@return The number of lineages that have crossed into the region of trait space occupied by the convergent taxa.  
 #'
-#'@import ape geiger MASS phytools
+#'@import ape geiger MASS phytools graphics
 #'
 #'@importFrom cluster ellipsoidhull
 #'

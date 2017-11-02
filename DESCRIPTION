@@ -1,15 +1,16 @@
 Package: convevol
-Title: Quantifies and assesses the significance of convergent evolution
-Version: 1.0
-Authors@R: "C. Tristan Stayton <tstayton@bucknell.edu> [aut, cre]"
-Description: Quantifies and assesses the significance of convergent evolution.
+Title: Analysis of Convergent Evolution
+Version: 1.1
+Authors@R: c(person("C. Tristan", "Stayton", role=c("aut","cre"), email="tstayton@bucknell.edu"))
+Description: Quantifies and assesses the significance of convergent evolution using two different methods (and 5 different measures) as described in Stayton (2015) <DOI:10.1111/evo.12729>.  Also displays results in a phylomorphospace framework.
 Depends: R (>= 3.1.2), ape, geiger, MASS, phytools
 Imports: cluster
 License: GPL-2
 LazyData: true
-Packaged: 2014-12-21 20:18:58 UTC; tstayton
-Author: "C. Tristan Stayton" [aut, cre]
-Maintainer: "C. Tristan Stayton" <tstayton@bucknell.edu>
+RoxygenNote: 6.0.1
 NeedsCompilation: no
+Packaged: 2017-11-02 14:57:50 UTC; tstayton
+Author: C. Tristan Stayton [aut, cre]
+Maintainer: C. Tristan Stayton <tstayton@bucknell.edu>
 Repository: CRAN
-Date/Publication: 2014-12-22 05:00:28
+Date/Publication: 2017-11-02 15:28:08 UTC

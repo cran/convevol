@@ -9,7 +9,7 @@
 #'
 #'@return A vector in which each element represents an edge of the phylogeny, and the values are the magnitudes of evolutionary change that occur along those edges.
 #'
-#'import ape geiger phytools
+#'@import ape geiger phytools
 #'
 #'@export
 #'
