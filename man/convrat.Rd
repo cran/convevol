@@ -2,7 +2,7 @@
 % Please edit documentation in R/convrat.R
 \name{convrat}
 \alias{convrat}
-\title{Quantify convergence by the ratio of the current to maximum past phenotypic distance}
+\title{Quantifies convergent evolution using the C1, C2, C3, and C4 measures as described by Stayton (2015).}
 \usage{
 convrat(phyl, phendata, convtips)
 }
@@ -14,13 +14,13 @@ convrat(phyl, phendata, convtips)
 \item{convtips}{A list consisting of the names of all convergent taxa}
 }
 \value{
-C1, C2, C3, and C4
+Four numbers - C1, C2, C3, C4.
 }
 \description{
-convrat quantifies convergence in a number of different ways.  The basic method uses 1-(dtip/dmax) or dmax/dtip, where dtip is the current phenotypic distance between taxa and dmax is the maximum phenotypic distance between the ancestors of those taxa.  This function also scales this measure in a variety of ways.
+Calculates the current phenotypic distance (Euclidean) between two taxa.  Then uses ancestral state reconstruction under a BM model to calculate the maximum phenotypic distance at any time between lineages leading from the most recent common ancestor of those two taxa to the tips.  Also calculate the total amount of phenotypic evolution in the clade defined by the most recent common ancestor of those lineages, and the total amount of phenotypic evolution in the input tree.  These quantities are used to calcualte C1-C4:  C1 = 1-(current distance / maximum ancestral distance); C2 = maximum ancestral distance - current distance; C3=C2/(total phenotypic evolution in the clade defined by the two taxa); C4 = C2/(total amount of phenotypic evolution in the entire tree).  If more than two convergent taxa are input, then C1-C4 are calculated for all possible pairs of taxa, and averaged.
 }
 \details{
-C1 = 1-(dtip/dmax).  C2 = dmax-dtip.  C3 is C2 scaled by the total amount of evolution that has occured in the clade descendend from the most recent common ancestor of all convergent tips.  C4 is C2 scaled by the total amount of evolution in the phylogeny.  This program assumes that all monophyletic clades composed entirely of putatively convergent taxa have been reduced to averages or representative taxa.
+None
 }
 \examples{
 
@@ -30,9 +30,16 @@ convtips<-c("t1","t2","t3")
 answer<-convrat(phyl,phendata,convtips)
 }
 \references{
+Maechler, M., Rousseeuw, P., Struyf, A., Hubert, M., Hornik, K.(2013).
+cluster: Cluster Analysis Basics and Extensions. R package version 1.14.4.
+
 Paradis, E., J. Claude, and K. Strimmer (2004) APE: Analyses of phylogenetics
 and evolution in R langauge. Bioinformatics, 20, 289-290.
 
 Revell, L. J. (2012) phytools: An R package for phylogenetic comparative 
 biology (and other things). Methods Ecol. Evol. 3 217-223.
+
+Stayton, C.T.  (2015).  The definition, recognition, and interpretation of
+convergent evolution, and two new measure for quantifying and assessing the 
+significance of convergence.  Evolution 69:2140-2153.
 }

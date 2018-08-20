@@ -17,6 +17,7 @@
 #'@import ape geiger MASS phytools 
 #'
 #'@importFrom cluster ellipsoidhull
+#'@importFrom graphics hist
 #'
 #'@export
 #'

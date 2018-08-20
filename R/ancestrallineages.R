@@ -1,19 +1,17 @@
-#'Calculates the maximum phenotypic distance between the lineages leading to a pair of taxa. 
-#'
-#'maxdist uses ancestral state reconstruction to determine the maximum distance between any ancestors of those two taxa.   
+#'Extracts lineages leading to two tips, t1 and t2, from their most recent common ancestor.
 #'
 #'@param phyl The phylogeny of interest in phylo format
 #'@param phendata Phenotypic data for all tips
-#'@param t1 The first taxon of interest
-#'@param t2 The second taxon of interest
+#'@param t1 The first tip of interest
+#'@param t2 The second tip of interest
 #'
-#'@details Returns the maximum Euclidean distance between any pair of ancestors of the two taxa, whether or not those two ancestors are contemporaries.  
+#'@details None
 #'
-#'@return The maximum phenotypic distance between the two taxa
+#'@return A list containing two matrices.  Each matrix corresponds to a tip.  The matrix 
+#'consists of reconstructed ancestral values for all nodes leading from the mrca of both
+#'tips to the tip.      
 #'
-#'@import ape geiger MASS phytools
-#'
-#'@importFrom stats dist
+#'@import ape geiger MASS phytools 
 #'
 #'@export
 #'
@@ -23,14 +21,19 @@
 #'Revell, L. J. (2012) phytools: An R package for phylogenetic comparative 
 #'biology (and other things). Methods Ecol. Evol. 3 217-223.
 #'
+#'Stayton, C.T.  (2015).  The definition, recognition, and interpretation of
+#'convergent evolution, and two new measure for quantifying and assessing the 
+#'significance of convergence.  Evolution 69:2140-2153.
+#'
 #'@examples
 #'
 #'phyl<-rtree(10)
 #'phendata<-fastBM(phyl,nsim=2)
-#'answer<-maxdist(phyl,phendata,1,10)
+#'answer<-ancestrallineages(phyl,phendata,"t1","t2")
 
 
-maxdist<-function(phyl,phendata,t1,t2)
+ancestrallineages<-function(phyl,phendata,t1,t2)
+
 
 {
 
@@ -71,7 +74,8 @@ anctimes<-node.depth.edgelength(phyl)
 combineddata<-cbind(anctimes,alldata)
 
 #Then we go through and grab just the mrca of our two tips, and all nodes 
-#between the mrca and the tips.  This part will be based on findanc.
+#between the mrca and the tips.  This part will depend on findanc and will
+#be very similar to what is done in maxdist.
 
 mrcas<-mrca(phyl)
 
@@ -118,10 +122,6 @@ t2pathtraits<-t2path[, 2:dims[2]]
 
 #And we'll bind them together
 
-alltraits<-rbind(t1pathtraits, t2pathtraits)
-
-phendist<-dist(alltraits,method="euclidean",diag=TRUE, upper=TRUE)
-
-answer<-max(phendist)
+answer<-list(t1pathtraits,t2pathtraits)
 
 }

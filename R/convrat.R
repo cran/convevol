@@ -1,22 +1,31 @@
-#'Quantify convergence by the ratio of the current to maximum past phenotypic distance
+#'Quantifies convergent evolution using the C1, C2, C3, and C4 measures as described by Stayton (2015).  
 #'
-#'convrat quantifies convergence in a number of different ways.  The basic method uses 1-(dtip/dmax) or dmax/dtip, where dtip is the current phenotypic distance between taxa and dmax is the maximum phenotypic distance between the ancestors of those taxa.  This function also scales this measure in a variety of ways.
+#'Calculates the current phenotypic distance (Euclidean) between two taxa.  Then uses ancestral state reconstruction under a BM model to calculate the maximum phenotypic distance at any time between lineages leading from the most recent common ancestor of those two taxa to the tips.  Also calculate the total amount of phenotypic evolution in the clade defined by the most recent common ancestor of those lineages, and the total amount of phenotypic evolution in the input tree.  These quantities are used to calcualte C1-C4:  C1 = 1-(current distance / maximum ancestral distance); C2 = maximum ancestral distance - current distance; C3=C2/(total phenotypic evolution in the clade defined by the two taxa); C4 = C2/(total amount of phenotypic evolution in the entire tree).  If more than two convergent taxa are input, then C1-C4 are calculated for all possible pairs of taxa, and averaged.
 #'
 #'@param phyl The phylogeny of interest in phylo format
 #'@param phendata Phenotypic data for all tips
 #'@param convtips A list consisting of the names of all convergent taxa
 #'
-#'@details  C1 = 1-(dtip/dmax).  C2 = dmax-dtip.  C3 is C2 scaled by the total amount of evolution that has occured in the clade descendend from the most recent common ancestor of all convergent tips.  C4 is C2 scaled by the total amount of evolution in the phylogeny.  This program assumes that all monophyletic clades composed entirely of putatively convergent taxa have been reduced to averages or representative taxa.   
+#'@details None
 #'
-#'@return C1, C2, C3, and C4   
+#'@return Four numbers - C1, C2, C3, C4.   
+#'
+#'@import ape geiger MASS phytools 
 #'
 #'@export
 #'
-#'@references Paradis, E., J. Claude, and K. Strimmer (2004) APE: Analyses of phylogenetics
+#'@references Maechler, M., Rousseeuw, P., Struyf, A., Hubert, M., Hornik, K.(2013).
+#'cluster: Cluster Analysis Basics and Extensions. R package version 1.14.4.
+#'
+#'Paradis, E., J. Claude, and K. Strimmer (2004) APE: Analyses of phylogenetics
 #'and evolution in R langauge. Bioinformatics, 20, 289-290.
 #'
 #'Revell, L. J. (2012) phytools: An R package for phylogenetic comparative 
 #'biology (and other things). Methods Ecol. Evol. 3 217-223.
+#'
+#'Stayton, C.T.  (2015).  The definition, recognition, and interpretation of
+#'convergent evolution, and two new measure for quantifying and assessing the 
+#'significance of convergence.  Evolution 69:2140-2153.
 #'
 #'@examples
 #'
@@ -49,23 +58,47 @@ if(ntax==2) {
 
 	mxdist<-maxdist(phyl,phendata,convtips[1],convtips[2])
 
-	C1<-1-(tipsdist/mxdist)
+	if (tipsdist>=mxdist) {
+		C1<-0
+		C2<-0
+		}
 
-	C2<-mxdist-tipsdist
+	if (mxdist>tipsdist) {
+		C1<-1-(tipsdist/mxdist)
+		C2<-mxdist-tipsdist
+		}
 
-	wholephylchanges<-sum(calcchanges(phyl,phendata))
+	
 
-	C3<-C2/wholephylchanges
+	lineagepaths<-ancestrallineages(phyl,phendata,convtips[1],convtips[2])
 
-	commonanc<-findMRCA(phyl,convtips)
+	t1totalevolution<-0
+	t2totalevolution<-0
 
-	subtree<-extract.clade(phyl,commonanc)
+	for (i in 1:dim(lineagepaths[[1]])[1]-1) {
 
-	subtreephen<-phendata[subtree$tip.label ,]
+		branchdistance<-sqrt(sum(((lineagepaths[[1]][i,]-lineagepaths[[1]][i+1,])^2)))
+		t1totalevolution<-t1totalevolution+branchdistance
+		
+		}
 
-	subtreechanges<-sum(calcchanges(subtree,subtreephen))
+	for (i in 1:dim(lineagepaths[[2]])[1]-1) {
 
-	C4<-C2/subtreechanges
+		branchdistance<-sqrt(sum(((lineagepaths[[2]][i,]-lineagepaths[[2]][i+1,])^2)))
+		t2totalevolution<-t2totalevolution+branchdistance
+
+		}
+
+	totallineageevolution<-t1totalevolution+t2totalevolution
+
+	C3<-C2/totallineageevolution
+	
+	cMRCA<-findMRCA(phyl,tips=convtips,type="node")
+	subphyl<-extract.clade(phyl,cMRCA)	
+	
+	wholephylchanges<-sum(calcchanges(subphyl,phendata[subphyl$tip.label,]))
+
+	C4<-C2/wholephylchanges
 
 	}
 
@@ -90,19 +123,38 @@ if(ntax>2) {
 
 			C2<-mxdist-tipsdist
 
+			lineagepaths<-ancestrallineages(phyl,phendata,convtips[i],convtips[j])
+
+			t1totalevolution<-0
+			t2totalevolution<-0
+
+			for (i in 1:dim(lineagepaths[[1]])[1]-1) {
+
+				branchdistance<-sqrt(sum(((lineagepaths[[1]][i,]-lineagepaths[[1]][i+1,])^2)))
+				t1totalevolution<-t1totalevolution+branchdistance
+
+				}
+
+			for (i in 1:dim(lineagepaths[[2]])[1]-1) {
+
+				branchdistance<-sqrt(sum(((lineagepaths[[2]][i,]-lineagepaths[[2]][i+1,])^2)))
+				t2totalevolution<-t2totalevolution+branchdistance
+
+				}
+
+
+			totallineageevolution<-t1totalevolution+t2totalevolution
+
+			C3<-C2/totallineageevolution
+	
+			cMRCA<-findMRCA(phyl,tips=convtips,type="node")
+			subphyl<-extract.clade(phyl,cMRCA)	
+	
+			wholephylchanges<-sum(calcchanges(subphyl,phendata[subphyl$tip.label,]))
+
 			wholephylchanges<-sum(calcchanges(phyl,phendata))
 
-			C3<-C2/wholephylchanges
-
-			commonanc<-findMRCA(phyl,convtips)
-
-			subtree<-extract.clade(phyl,commonanc)
-
-			subtreephen<-phendata[subtree$tip.label ,]
-
-			subtreechanges<-sum(calcchanges(subtree,subtreephen))
-
-			C4<-C2/subtreechanges
+			C4<-C2/wholephylchanges
 
 			C1s<-c(C1s,C1)
 			C2s<-c(C2s,C2)

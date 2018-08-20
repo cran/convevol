@@ -8,7 +8,9 @@
 #'
 #'@return Nothing - just plots the ellipse.  
 #'
-#'@import ape 
+#'@import ape
+#'
+#'@importFrom graphics lines 
 #'
 #'@export
 #'

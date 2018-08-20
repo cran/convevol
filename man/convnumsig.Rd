@@ -4,8 +4,8 @@
 \alias{convnumsig}
 \title{Assess the significance of convergent evolution using simulations and the convnum metric}
 \usage{
-convnumsig(phyl, phendata, convtips, nsim, ellipse = NULL, plot = FALSE,
-  plotellipse = NULL)
+convnumsig(phyl, phendata, convtips, nsim, ellipse = NULL,
+  plot = FALSE, plotellipse = NULL)
 }
 \arguments{
 \item{phyl}{The phylogeny of interest in phylo format}
