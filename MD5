@@ -1,11 +1,11 @@
-d91f4f1e2d081c4b08558d043f190aa3 *DESCRIPTION
+8ade2292b173477004c38c9eb4327a27 *DESCRIPTION
 b014ecf3ce711d488324a79d59277eb0 *NAMESPACE
 645b6a1a6d0697b1457afa0f33a15a6b *R/allmaxdist.R
 d7bd4831f2ace9666149faec4fcff263 *R/ancestrallineages.R
 19347fcfe1c50c3a5eed5d0f08274b4c *R/calcchanges.R
 11e028264916a1bfe8f4816aa4ba5b73 *R/convnum.R
 356321f04af05de685afbd43593c809b *R/convnumsig.R
-94090852345732af5b04622955cba6f8 *R/convrat.R
+851bdd9102e02839f08804b4702a68c2 *R/convrat.R
 e8b3ef132c2e3559d1cc3bdede9d1bbc *R/convratsig.R
 ed76759861e479c3587268828d10e6a1 *R/findanc.R
 4b989e54a890efe15c35c6a7b6e41c6a *R/labelstonumbers.R

@@ -128,16 +128,16 @@ if(ntax>2) {
 			t1totalevolution<-0
 			t2totalevolution<-0
 
-			for (i in 1:dim(lineagepaths[[1]])[1]-1) {
+			for (ii in 1:(dim(lineagepaths[[1]])[1]-1)) {
 
-				branchdistance<-sqrt(sum(((lineagepaths[[1]][i,]-lineagepaths[[1]][i+1,])^2)))
+				branchdistance<-sqrt(sum(((lineagepaths[[1]][ii,]-lineagepaths[[1]][ii+1,])^2)))
 				t1totalevolution<-t1totalevolution+branchdistance
 
 				}
 
-			for (i in 1:dim(lineagepaths[[2]])[1]-1) {
+			for (ii in 1:dim(lineagepaths[[2]])[1]-1) {
 
-				branchdistance<-sqrt(sum(((lineagepaths[[2]][i,]-lineagepaths[[2]][i+1,])^2)))
+				branchdistance<-sqrt(sum(((lineagepaths[[2]][ii,]-lineagepaths[[2]][ii+1,])^2)))
 				t2totalevolution<-t2totalevolution+branchdistance
 
 				}
