@@ -2,14 +2,14 @@
 #'
 #'Uses fastAnc to reconstruct ancestral states for multiple phenotypic characters
 #'
-#'@param phyl The phylogeny of interest in phylo format
+#'@param phy The phylogeny of interest in phylo format
 #'@param phendata Phenotypic data for all tips
 #'
 #'@details None
 #'
 #'@return A matrix with the tips data in the first n rows and the ancestral data in the remaining n-1 rows.  
 #'
-#'@import ape geiger MASS phytools
+#'@import ape MASS phytools
 #'
 #'@export
 #'
@@ -21,38 +21,38 @@
 #'
 #'@examples
 #'
-#'phyl<-rtree(10)
+#'phy<-rtree(10)
 #'
-#'phendata<-fastBM(phyl,nsim=2)
+#'phendata<-fastBM(phy,nsim=2)
 #'
-#'ancs<-multianc(phyl,phendata)
+#'ancs<-multianc(phy,phendata)
 
 
 
-multianc<-function(phyl,phendata)
+multianc<-function(phy,phendata)
 
 {
 
 #Error checking
 
-if (class(phyl) != "phylo") 
+if (!inherits(phy,"phylo")) 
 	stop("your tree must be class 'phylo.'")
 
-if (nrow(phendata) != length(phyl$tip)) 
+if (nrow(phendata) != length(phy$tip)) 
 	stop("your data matrix must have the same number of rows as tips in the tree.")
     
 if (is.null(rownames(phendata))) {
 	warning("no row names for data.  Assuming that the rows are in the same order as tips.")
-      rownames(X) <- phyl$tip.label
+      rownames(X) <- phy$tip.label
 	}
 
 #The function
 
-firstvar<-fastAnc(phyl,phendata[, 1])
+firstvar<-fastAnc(phy,phendata[, 1])
 
 allancstates<-matrix(data=0, length(firstvar), ncol(phendata))
 
-for (i in 1:ncol(phendata)) {allancstates[, i]<-fastAnc(phyl,phendata[, i])}
+for (i in 1:ncol(phendata)) {allancstates[, i]<-fastAnc(phy,phendata[, i])}
 
 colnames(allancstates)<-colnames(phendata)
 

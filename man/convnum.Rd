@@ -4,11 +4,17 @@
 \alias{convnum}
 \title{Quantify convergence by the number of convergent events}
 \usage{
-convnum(phyl, phendata, convtips, plot = TRUE, ellipse = NULL,
-  plotellipse = NULL)
+convnum(
+  phy,
+  phendata,
+  convtips,
+  plot = TRUE,
+  ellipse = NULL,
+  plotellipse = NULL
+)
 }
 \arguments{
-\item{phyl}{The phylogeny of interest in phylo format}
+\item{phy}{The phylogeny of interest in phylo format}
 
 \item{phendata}{Phenotypic data for all tips}
 
@@ -31,10 +37,10 @@ This function will construct an ellipse around all convergent taxa.  Then it wil
 }
 \examples{
 
-phyl<-rtree(10)
-phendata<-fastBM(phyl,nsim=2)
+phy<-rtree(10)
+phendata<-fastBM(phy,nsim=2)
 convtips<-c("t1","t2","t3")
-answer<-convnum(phyl,phendata,convtips,plot=TRUE,ellipse=NULL,plotellipse=NULL)
+answer<-convnum(phy,phendata,convtips,plot=TRUE,ellipse=NULL,plotellipse=NULL)
 }
 \references{
 Maechler, M., Rousseeuw, P., Struyf, A., Hubert, M., Hornik, K.(2013).

@@ -4,10 +4,10 @@
 \alias{multianc}
 \title{Reconstructs ancestral states for multiple characters}
 \usage{
-multianc(phyl, phendata)
+multianc(phy, phendata)
 }
 \arguments{
-\item{phyl}{The phylogeny of interest in phylo format}
+\item{phy}{The phylogeny of interest in phylo format}
 
 \item{phendata}{Phenotypic data for all tips}
 }
@@ -22,11 +22,11 @@ None
 }
 \examples{
 
-phyl<-rtree(10)
+phy<-rtree(10)
 
-phendata<-fastBM(phyl,nsim=2)
+phendata<-fastBM(phy,nsim=2)
 
-ancs<-multianc(phyl,phendata)
+ancs<-multianc(phy,phendata)
 }
 \references{
 Paradis, E., J. Claude, and K. Strimmer (2004) APE: Analyses of phylogenetics

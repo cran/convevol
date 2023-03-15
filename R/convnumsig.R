@@ -2,7 +2,7 @@
 #'
 #'Simulates evolution along a given phylogeny, using parameters derived from observed data, and calculates the convnum metric for each simulation for a set of user-defined taxa.  Then compares the observed convnum value to the simulated values to assess the significance of the observed levels of convergent evolution.  
 #'
-#'@param phyl The phylogeny of interest in phylo format
+#'@param phy The phylogeny of interest in phylo format
 #'@param phendata Phenotypic data for all tips
 #'@param convtips A list consisting of the names of all convergent taxa
 #'@param nsim The number of simulatons to conduct
@@ -14,10 +14,11 @@
 #'
 #'@return A list, consisting first of the p-value for the observed convnum, and second of a vector containing all of the simulated convnum values.  Also displays a histogram of all of the simulated convnum values.
 #'
-#'@import ape geiger MASS phytools 
+#'@import ape MASS phytools 
 #'
 #'@importFrom cluster ellipsoidhull
 #'@importFrom graphics hist
+#'@importFrom geiger sim.char
 #'
 #'@export
 #'
@@ -32,21 +33,21 @@
 #'
 #'@examples
 #'
-#'phyl<-rtree(10)
-#'phendata<-fastBM(phyl,nsim=2)
+#'phy<-rtree(10)
+#'phendata<-fastBM(phy,nsim=2)
 #'convtips<-c("t1","t2","t3")
-#'answer<-convnumsig(phyl,phendata,convtips,10,plot=FALSE,ellipse=NULL,plotellipse=NULL)
+#'answer<-convnumsig(phy,phendata,convtips,10,plot=FALSE,ellipse=NULL,plotellipse=NULL)
 
-convnumsig<-function(phyl,phendata,convtips,nsim,ellipse=NULL,plot=FALSE,plotellipse=NULL)
+convnumsig<-function(phy,phendata,convtips,nsim,ellipse=NULL,plot=FALSE,plotellipse=NULL)
 
 {
 
 #Error checking
 
-if (class(phyl) != "phylo") 
+if (!inherits(phy,"phylo")) 
 	stop("your tree must be class 'phylo.'")
 
-if (nrow(phendata) != length(phyl$tip)) 
+if (nrow(phendata) != length(phy$tip)) 
 	stop("your data matrix must have the same number of rows as tips in the tree.")
     
 if (is.list(convtips)==TRUE) {convtips<-unlist(convtips)} 
@@ -57,7 +58,7 @@ if (length(convtips)<=ncol(phendata))
 
 #The function.  First the observed value
 
-ob<-convnum(phyl,phendata,convtips,plot=TRUE,ellipse=NULL)
+ob<-convnum(phy,phendata,convtips,plot=TRUE,ellipse=NULL)
 
 if (is.null(ellipse)) {convell<-ob[[2]]}
 else {convell<-ellipse}
@@ -67,11 +68,11 @@ else {plotell<-plotellipse}
 
 #Then the simulations
 
-#ancvals<-multianc(phyl,phendata)
+#ancvals<-multianc(phy,phendata)
 
-#rootvals<-ancvals[length(phyl$tip.label)+1 ,]
+#rootvals<-ancvals[length(phy$tip.label)+1 ,]
 
-C<-vcv.phylo(phyl)
+C<-vcv.phylo(phy)
 
 phendata<-as.matrix(phendata)
 
@@ -79,9 +80,9 @@ vcv<-phyl.vcv(phendata,C,0)
 
 rootrow<-dim(phendata)[1]+1
 
-rootvals<-multianc(phyl,phendata)[rootrow,]
+rootvals<-multianc(phy,phendata)[rootrow,]
 
-simdata<-sim.char(phyl,vcv$R,nsim,model=c("BM"),root=0)
+simdata<-sim.char(phy,vcv$R,nsim,model=c("BM"),root=0)
 
 #simdata<-simdata+rootvals
 
@@ -95,7 +96,7 @@ i<-1
 while (i<=nsim) {
 	
 	simphen<-simdata[, , i]
-	simval<-convnum(phyl,simphen,convtips,plot=plot,ellipse=convell,plotellipse=plotell)
+	simval<-convnum(phy,simphen,convtips,plot=plot,ellipse=convell,plotellipse=plotell)
 	sobs<-c(sobs,simval[[1]])
 	if(simval[[1]]>=ob[[1]]) {greater<-greater+1}
 	i<-i+1	

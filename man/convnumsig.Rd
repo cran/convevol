@@ -4,11 +4,18 @@
 \alias{convnumsig}
 \title{Assess the significance of convergent evolution using simulations and the convnum metric}
 \usage{
-convnumsig(phyl, phendata, convtips, nsim, ellipse = NULL,
-  plot = FALSE, plotellipse = NULL)
+convnumsig(
+  phy,
+  phendata,
+  convtips,
+  nsim,
+  ellipse = NULL,
+  plot = FALSE,
+  plotellipse = NULL
+)
 }
 \arguments{
-\item{phyl}{The phylogeny of interest in phylo format}
+\item{phy}{The phylogeny of interest in phylo format}
 
 \item{phendata}{Phenotypic data for all tips}
 
@@ -33,10 +40,10 @@ None
 }
 \examples{
 
-phyl<-rtree(10)
-phendata<-fastBM(phyl,nsim=2)
+phy<-rtree(10)
+phendata<-fastBM(phy,nsim=2)
 convtips<-c("t1","t2","t3")
-answer<-convnumsig(phyl,phendata,convtips,10,plot=FALSE,ellipse=NULL,plotellipse=NULL)
+answer<-convnumsig(phy,phendata,convtips,10,plot=FALSE,ellipse=NULL,plotellipse=NULL)
 }
 \references{
 Maechler, M., Rousseeuw, P., Struyf, A., Hubert, M., Hornik, K.(2013).

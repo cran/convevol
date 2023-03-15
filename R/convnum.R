@@ -2,7 +2,7 @@
 #'
 #'This program takes in a set of taxa that are already suspected to be convergent in a particular area of  morphospace.  It then counts the number of times that a lineage has invaded that region of morphospace.  
 #'
-#'@param phyl The phylogeny of interest in phylo format
+#'@param phy The phylogeny of interest in phylo format
 #'@param phendata Phenotypic data for all tips
 #'@param convtips A list consisting of the names of all convergent taxa
 #'@param ellipse Optional.  An ellipse defining the region of interest, into which groups may or may not converge.
@@ -13,7 +13,7 @@
 #'
 #'@return The number of lineages that have crossed into the region of trait space occupied by the convergent taxa.  
 #'
-#'@import ape geiger MASS phytools
+#'@import ape MASS phytools
 #'
 #'@importFrom cluster ellipsoidhull 
 #'@importFrom graphics points
@@ -32,22 +32,22 @@
 #'
 #'@examples
 #'
-#'phyl<-rtree(10)
-#'phendata<-fastBM(phyl,nsim=2)
+#'phy<-rtree(10)
+#'phendata<-fastBM(phy,nsim=2)
 #'convtips<-c("t1","t2","t3")
-#'answer<-convnum(phyl,phendata,convtips,plot=TRUE,ellipse=NULL,plotellipse=NULL)
+#'answer<-convnum(phy,phendata,convtips,plot=TRUE,ellipse=NULL,plotellipse=NULL)
 
 convnum <-
-function(phyl,phendata,convtips,plot=TRUE,ellipse=NULL,plotellipse=NULL)
+function(phy,phendata,convtips,plot=TRUE,ellipse=NULL,plotellipse=NULL)
 
 {
 
 #Error checking
 
-if (class(phyl) != "phylo") 
+if (!inherits(phy,"phylo")) 
 	stop("your tree must be class 'phylo.'")
 
-if (nrow(phendata) != length(phyl$tip)) 
+if (nrow(phendata) != length(phy$tip)) 
 	stop("your data matrix must have the same number of rows as tips in the tree.")
     
 if (is.list(convtips)==TRUE) {convtips<-unlist(convtips)} 
@@ -60,7 +60,7 @@ if (length(convtips)<=ncol(phendata))
 
 phendata<-as.matrix(phendata)
 
-phendata<-phendata[phyl$tip.label,]
+phendata<-phendata[phy$tip.label,]
 
 convtaxa<-phendata[convtips ,]
 
@@ -70,7 +70,7 @@ if (is.null(ellipse)) {convell<-ellipsoidhull(convtaxa,0.0001)}
 if (is.null(plotellipse)) {plotell<-ellipsoidhull(convtaxa[,1:2],0.0001)}
 	else {plotell<-plotellipse}
 
-allancstates<-apply(phendata, 2, fastAnc, tree=phyl)
+allancstates<-apply(phendata, 2, fastAnc, tree=phy)
 
 alldata<-rbind(phendata,allancstates)
 
@@ -78,9 +78,9 @@ alldata<-rbind(phendata,allancstates)
 
 if (plot==TRUE) {
 
-	phyl$node.label<-NULL
+	phy$node.label<-NULL
 
-	phylomorphospace(phyl,phendata[, 1:2],label="off")
+	phylomorphospace(phy,phendata[, 1:2],label="off")
 
 	points(phendata[unlist(convtips), 1:2],col="white")
 
@@ -90,7 +90,7 @@ if (plot==TRUE) {
 
 cross<-0
 
-nbran<-dim(phyl$edge)
+nbran<-dim(phy$edge)
 
 crossedges<-c()
 
@@ -101,8 +101,8 @@ while (i<=nbran[1]) {
 isinanc=FALSE
 isindes=FALSE
 
-anc<-phyl$edge[i,1]
-des<-phyl$edge[i,2]
+anc<-phy$edge[i,1]
+des<-phy$edge[i,2]
 
 ancval<-alldata[anc ,]
 desval<-alldata[des ,]
