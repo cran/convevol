@@ -5,7 +5,7 @@
 #'@param phy The time calibrated phylogeny of interest in phylo format
 #'@param traits A matrix of numeric phenotypic traits with rownames matching tip labels of phy
 #'@param focaltaxa A vector of tip labels for the putatively convergent taxa to be compared
-#'@param groups An optional vector of groups with names matching focaltaxa. Indicates the group identity of all putatively convergent taxa and limits Ct measures to intergroup comparisons only
+#'@param groups An optional vector of groups with names matching focaltaxa. Indicates the group identity of all putatively convergent taxa and limits Ct measures to intergroup comparisons only. Note that failing to indicate groups when they are present may lead to anomalous results
 #'@param conservative Logical value indicating whether measurement of Dmax.t should be restricted to before the origin of the oldest lineage in each pairwise comparison of the focaltaxa. The origin of each convergent lineages is taken as the most recent common ancestor of tips in each user defined group. Where groups include a single tip, the parent node of the tip's subtending branch is used. Requires group object to be provided by user.
 #'@param VERBOSE Logical value indicating whether model information should be printed during computation
 #'

@@ -1,11 +1,11 @@
-d96a91677c870faef9257e50fdfbafdf *DESCRIPTION
+c5e10aedeb5ef0aca84f38c2ce444803 *DESCRIPTION
 d1944e2e63670d3724b542aedf2fba82 *NAMESPACE
 5a9e2216af0856449982a0cad9d80585 *R/calcConv.R
-f7294ceced16fd18f2b55d9493d8e8db *R/calcConvCt.r
+a8b1c96dac9df8582c962d759fcf3138 *R/calcConvCt.r
 33fbe76687a89a998104db0a37172cb6 *R/calcCs.R
-5891cfd626223e1803acfa1b65af15a9 *R/calcCsCt.r
+1d95414b1e7db600183f4b1e4628560e *R/calcCsCt.R
 035fb75b5d344ed2bb0046d036da226d *R/convSig.r
-68a17981211797f4b7632951074aaf2f *R/convSigCt.R
+3c25db77e621dbe8d9601c1216461161 *R/convSigCt.R
 2ceea3b723e92ca2ecfc8cce35e76b75 *R/convnum.R
 ffa2e7c7be22537d480225f81a13ca9d *R/convnumsig.R
 fa386bada4fabd46d9d204a5a489b535 *R/multianc.R

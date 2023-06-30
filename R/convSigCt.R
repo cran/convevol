@@ -5,7 +5,7 @@
 #'@param phy The time calibrated phylogeny of interest in phylo format
 #'@param traits a matrix of numeric phenotypic traits with rownames matching tip labels of phy
 #'@param focaltaxa a vector of tip labels for the putatively convergent taxa to be compared
-#'@param groups an optional vector of groups with names matching focaltaxa. Indicates the group identity of all putatively convergent taxa and limits Ct measures to intergroup comparisons only
+#'@param groups an optional vector of groups with names matching focaltaxa. Indicates the group identity of all putatively convergent taxa and limits Ct measures to intergroup comparisons only. Note that failing to indicate groups when they are present may lead to anomalous results
 #'@param nsim number of simulated (Brownian motion) datasets used to build the null distribution
 #'@param ... optional arguments to be passed to calcConv. If convservative is TRUE, Dmax.t is restricted to before the origin of the oldest lineage in each pairwise comparison of the focal taxa. The origin of convergent lineages is taken as the most recent common ancestors of each user defined group. Where these groups include a single tip, the parent node of its subtending branch is used. Requires user to provide groups. If VERBOSE is TRUE, model information will be printed during computation, including time limits imposed on Dmax.t if the conservative option is chosen.
 #'

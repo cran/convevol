@@ -56,6 +56,7 @@ calcCsCt <- function(tips, ancList, allDists, phy, VERBOSE=FALSE, allVals, edge,
 	path_info<-lapply(edge,function(x) x[edge_path,])
 	meas.path<-rbind(data.frame(node = unit1,path="P1"),
 					data.frame(node = unit2,path="P2"))
+	meas.path$path <- as.character(meas.path$path)	## enforce treating meas.path$path as a character to avoid errors when rewriting
 	meas.path[meas.path$node %in% c(tips[1],tips[2]),]$path <-"tip"
 	meas.path[meas.path$node == MRCA,]$path <- "mrca"
 	meas.path$height <- sapply(1:nrow(meas.path),function(x) nodeheight(phy,meas.path$node[x]))
