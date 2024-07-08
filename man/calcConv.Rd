@@ -2,10 +2,10 @@
 % Please edit documentation in R/calcConv.R
 \name{calcConv}
 \alias{calcConv}
-\title{Quantifies convergent evolution by the ratio of the current to maximum past phenotypic distance between two or 
+\title{Quantifies convergent evolution by the ratio of the current to maximum past phenotypic distance between two or
 more lineages, as described in Stayton (2015). Code written by Jonathan S. Mitchell for Zelditch et al. (2017).}
 \usage{
-calcConv(phy, traits, focaltaxa, VERBOSE = FALSE)
+calcConv(phy, traits, focaltaxa, anc = NULL, VERBOSE = FALSE)
 }
 \arguments{
 \item{phy}{The phylogeny of interest in phylo format}
@@ -13,6 +13,8 @@ calcConv(phy, traits, focaltaxa, VERBOSE = FALSE)
 \item{traits}{Phenotypic data for all tips}
 
 \item{focaltaxa}{A list consisting of the names of all putatively convergent taxa}
+
+\item{anc}{A matrix of user supplied ancestral trait values at internal nodes (formatted as "traits" but with node number as rownames)}
 
 \item{VERBOSE}{Whether or not to print progress}
 }
@@ -23,9 +25,9 @@ C1-C4 convergence measures for all pairs of putatively convergent taxa.
 calcConv prepares arguements for the CalcCs function
 }
 \details{
-calcConv is a wrapper function which formats data, performs ancestral state reconstructions, obtains 
+calcConv is a wrapper function which formats data, performs ancestral state reconstructions, obtains
 distance matrices, and determines pairwise combinations of focal taxa, which are then used as arguements for
-the CalcCs function, which calculates values for C1-C4 of Stayton (2015) for each pair of putatively 
+the CalcCs function, which calculates values for C1-C4 of Stayton (2015) for each pair of putatively
 convergent taxa.
 }
 \examples{
@@ -33,10 +35,10 @@ convergent taxa.
 phy<-rtree(100)
 traits<-fastBM(phy,nsim=3)
 focaltaxa<-c("t1","t50","t100")
-answer<-calcConv(phy,traits,focaltaxa,VERBOSE=FALSE)
+answer<-calcConv(phy,traits,focaltaxa,anc=NULL,VERBOSE=FALSE)
 }
 \references{
-Stayton, C.T. 2015. The definition, recognition, and interpretation of convergent evolution, and 
+Stayton, C.T. 2015. The definition, recognition, and interpretation of convergent evolution, and
 two new measures for quantifying and assessing the significance of convergence. Evolution 69:2140-2453.
 
 Zelditch, M.L., J. Ye, J.S. Mitchell, and D.L. Swiderski. 2017. Rare ecomorphological

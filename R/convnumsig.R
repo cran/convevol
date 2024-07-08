@@ -14,7 +14,7 @@
 #'
 #'@return A list, consisting first of the p-value for the observed convnum, and second of a vector containing all of the simulated convnum values.  Also displays a histogram of all of the simulated convnum values.
 #'
-#'@import ape MASS phytools 
+#'@import ape phytools 
 #'
 #'@importFrom cluster ellipsoidhull
 #'@importFrom graphics hist

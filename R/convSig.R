@@ -7,6 +7,7 @@
 #'@param phy The phylogeny of interest in phylo format
 #'@param traits Phenotypic data for all tips
 #'@param focaltaxa A list consisting of the names of all putatively convergent taxa
+#'@param user.ace A matrix of user supplied ancestral trait values at internal nodes (formatted as "traits" but with node number as rownames)
 #'@param nsim The number of simulations to use to assess significance
 #'
 #'@details This script simulates data according to a Brownian motion model of
@@ -17,7 +18,7 @@
 #'@return C1-C4 convergence measures for all pairs of putatively convergent 
 #'taxa and their associated p-values.
 #'
-#'@import ape MASS phytools
+#'@import ape phytools
 #'
 #'@importFrom geiger sim.char
 #'
@@ -35,17 +36,18 @@
 #'phy<-rtree(100)
 #'traits<-fastBM(phy,nsim=3)
 #'focaltaxa<-c("t1","t50","t100")
-#'answer<-convSig(phy,traits,focaltaxa,nsim=10)
+#'answer<-convSig(phy,traits,focaltaxa,user.ace=NULL,nsim=10)
 
-convSig <- function(phy, traits, focaltaxa, nsim=1e3)	{
-	data <- calcConv(phy, traits, focaltaxa)
-	
-	# run simulations
-	phylMat <- vcv.phylo(phy)
-	phylMat2 <- phyl.vcv(traits, phylMat, 0)
-	simDat <- sim.char(phy, phylMat2$R, nsim, model="BM", root=0)
-	simOut <- apply(simDat, 3, calcConv, phy=phy, focaltaxa=focaltaxa)
-	pvals <- sapply(1:4, function(x) length(which(simOut[x,] >= data[x]))) / nsim
-	out <- cbind(data, pvals)
-	return(out)
+convSig <- function (phy, traits, focaltaxa, user.ace = NULL, nsim = 1000) 
+{
+    data <- calcConv(phy, traits, focaltaxa, anc = user.ace)
+    phylMat <- vcv.phylo(phy)
+    phylMat2 <- phyl.vcv(traits, phylMat, 0)
+    simDat <- sim.char(phy, phylMat2$R, nsim, model = "BM", 
+        root = 0)
+    simOut <- apply(simDat, 3, calcConv, phy = phy, focaltaxa = focaltaxa)
+    pvals <- sapply(1:4, function(x) length(which(simOut[x, ] >= 
+        data[x])))/nsim
+    out <- cbind(data, pvals)
+    return(out)
 }

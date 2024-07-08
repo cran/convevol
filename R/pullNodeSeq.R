@@ -8,7 +8,7 @@
 #'
 #'@return A vector of ancestors  
 #'
-#'@import MASS phytools
+#'@import phytools
 #'
 #'@export
 #'

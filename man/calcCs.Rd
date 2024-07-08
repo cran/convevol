@@ -2,7 +2,7 @@
 % Please edit documentation in R/calcCs.R
 \name{calcCs}
 \alias{calcCs}
-\title{Calculates the C1-C4 measures of convergent evolution between two lineages as described in 
+\title{Calculates the C1-C4 measures of convergent evolution between two lineages as described in
 Stayton (2015). All measures quantify convergence by the ratio of current to maximum past phenotypic
 distance between lineages. Can be used as-is but more often will be used within the calcConv script.
 Code written by Jonathan S. Mitchell for Zelditch et al. (2017)}
@@ -28,19 +28,19 @@ C1-C4 convergence measures for all pairs of putatively convergent taxa.
 calcCs calculates the C1-C4 measures of convergent evolution
 }
 \details{
-calcCs calculates values of C1-C4, all of which are fundamentally based on comparing the 
-current phenotypic distance between two tips to the maximum past distances between the ancestors of 
+calcCs calculates values of C1-C4, all of which are fundamentally based on comparing the
+current phenotypic distance between two tips to the maximum past distances between the ancestors of
 those tips. Higher values indicate a greater amount of past phenotypic distance which has been "closed"
-by subsequent evolution, and thus greater convergence. C1 is the ratio of tip to maximum ancestral 
+by subsequent evolution, and thus greater convergence. C1 is the ratio of tip to maximum ancestral
 distance. C2 is the difference of those two values. C3 scales C2 by the total amount of evolution that
 has occured in the two lineages. C4 scales C2 by the total amount of evolution that has occurred in the
 entire phylogeny. The arguments for this function will usually be obtained from the calcConv script in
 convevol - this allows certain computationally-intensive steps (e.g., calculating ancestral states) to
-only be performed once, thus saving a great deal of time. This script also corrects an error in the 
+only be performed once, thus saving a great deal of time. This script also corrects an error in the
 calculation of C4 of previous versions of convevol.
 }
 \references{
-Stayton, C.T. 2015. The definition, recognition, and interpretation of convergent evolution, and 
+Stayton, C.T. 2015. The definition, recognition, and interpretation of convergent evolution, and
 two new measures for quantifying and assessing the significance of convergence. Evolution 69:2140-2453.
 
 Zelditch, M.L., J. Ye, J.S. Mitchell, and D.L. Swiderski. 2017. Rare ecomorphological

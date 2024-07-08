@@ -2,7 +2,7 @@
 % Please edit documentation in R/pullNodeSeq.R
 \name{pullNodeSeq}
 \alias{pullNodeSeq}
-\title{Extracts a vector of ancestors for a given taxon. Code written by Jonathan S. Mitchell for 
+\title{Extracts a vector of ancestors for a given taxon. Code written by Jonathan S. Mitchell for
 Zelditch et al. (2017)}
 \usage{
 pullNodeSeq(phy, tip)

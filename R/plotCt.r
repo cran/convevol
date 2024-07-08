@@ -30,7 +30,7 @@
 #'
 #'@examples
 #'
-#\donttest{'# create time calibrated tree
+#'\donttest{#' create time calibrated tree
 #'phy<-rcoal(100)
 #'
 #'# create three normally distributed phenotypic traits
@@ -41,6 +41,7 @@
 #'system.time(run2 <- convSigCt(phy, traits, focaltaxa, nsim=10))
 #'
 #'plotCt(output = run2,phy = phy,focaltaxa = focaltaxa)}
+
 
 plotCt <- function(output, phy, focaltaxa, nsim = 25,col = c("black","forest green","dodgerblue2","firebrick1","purple","orange","salmon","goldenrod","springgreen2","plum1"), groups = NULL,...){
 measured<-output$meas.path

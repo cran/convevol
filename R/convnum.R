@@ -13,7 +13,7 @@
 #'
 #'@return The number of lineages that have crossed into the region of trait space occupied by the convergent taxa.  
 #'
-#'@import ape MASS phytools
+#'@import ape phytools
 #'
 #'@importFrom cluster ellipsoidhull 
 #'@importFrom graphics points
@@ -112,9 +112,11 @@ desdev<-desval-convell$loc
 
 cutoff<-1.05*convell$d2  #cutoff<-(1+tol)*convell$d2
 
-if (t(ancdev)%*%ginv(convell$cov)%*%ancdev<=cutoff) {isinanc=TRUE}else{isinanc=FALSE}
+if (t(ancdev)%*%solve(convell$cov)%*%ancdev<=cutoff) {isinanc=TRUE}else{isinanc=FALSE}
+#Original code: if (t(ancdev)%*%ginv(convell$cov)%*%ancdev<=cutoff) {isinanc=TRUE}else{isinanc=FALSE}
 
-if (t(desdev)%*%ginv(convell$cov)%*%desdev<=cutoff) {isindes=TRUE}else{isindes=FALSE}
+if (t(desdev)%*%solve(convell$cov)%*%desdev<=cutoff) {isindes=TRUE}else{isindes=FALSE}
+#Original code: if (t(desdev)%*%ginv(convell$cov)%*%desdev<=cutoff) {isindes=TRUE}else{isindes=FALSE}
 
 if (isinanc!=TRUE & isindes==TRUE) {
 

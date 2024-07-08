@@ -12,11 +12,11 @@
 #'@param lim.height an optional tree height used to limit Dmax.t, passed only if groups are defined and a conservative test is run (see calcConv)
 #'
 #'@details Function incorporates the optimizations introduced by Zelditch et al. (2017), which significantly improve runtimes
-#'@details Reconstructions part way along branches are obtained using equation [2] of Felsenstein (1985), following code modified from the phytools (Revell, 2012) function contMap
+#'@details Reconstructions part way along branches are obtained using equation 2 of Felsenstein (1985), following code modified from the phytools (Revell, 2012) function contMap
 #'
 #'@return A list of the Ct values
 #'
-#'@import MASS phytools
+#'@import phytools
 #'
 #'@importFrom stats na.omit
 #'

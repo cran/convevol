@@ -9,7 +9,7 @@
 #'
 #'@return A matrix with the tips data in the first n rows and the ancestral data in the remaining n-1 rows.  
 #'
-#'@import ape MASS phytools
+#'@import ape phytools
 #'
 #'@export
 #'

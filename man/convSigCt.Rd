@@ -4,20 +4,30 @@
 \alias{convSigCt}
 \title{Computes and conducts significance tests on Ct-metric scores for putatively convergent tips (or groups of tips) given a set of user provided phenotypic characters and a time calibrated phylogeny.}
 \usage{
-convSigCt(phy, traits, focaltaxa, groups = NULL, nsim = 1000, ...)
+convSigCt(
+  phy,
+  traits,
+  focaltaxa,
+  groups = NULL,
+  user.ace = NULL,
+  nsim = 1000,
+  ...
+)
 }
 \arguments{
 \item{phy}{The time calibrated phylogeny of interest in phylo format}
 
-\item{traits}{a matrix of numeric phenotypic traits with rownames matching tip labels of phy}
+\item{traits}{A matrix of numeric phenotypic traits with rownames matching tip labels of phy}
 
-\item{focaltaxa}{a vector of tip labels for the putatively convergent taxa to be compared}
+\item{focaltaxa}{A vector of tip labels for the putatively convergent taxa to be compared}
 
-\item{groups}{an optional vector of groups with names matching focaltaxa. Indicates the group identity of all putatively convergent taxa and limits Ct measures to intergroup comparisons only}
+\item{groups}{An optional vector of groups with names matching focaltaxa. Indicates the group identity of all putatively convergent taxa and limits Ct measures to intergroup comparisons only}
 
-\item{nsim}{number of simulated (Brownian motion) datasets used to build the null distribution}
+\item{user.ace}{A matrix of user supplied ancestral trait values at internal nodes (formatted as "traits" but with node number as rownames)}
 
-\item{...}{optional arguments to be passed to calcConv. If convservative is TRUE, Dmax.t is restricted to before the origin of the oldest lineage in each pairwise comparison of the focal taxa. The origin of convergent lineages is taken as the most recent common ancestors of each user defined group. Where these groups include a single tip, the parent node of its subtending branch is used. Requires user to provide groups. If VERBOSE is TRUE, model information will be printed during computation, including time limits imposed on Dmax.t if the conservative option is chosen.}
+\item{nsim}{Number of simulated (Brownian motion) datasets used to build the null distribution}
+
+\item{...}{optional arguments to be passed to calcConvCt. If conservative == TRUE, Dmax.t will be restricted to occurr before the oldest stem lineage of the two groups involved in each pairwise comparison. Stem lineage age for each group is defined as the height of the parent node of the branch subtending the most recent common ancestor of tips within a group. Where groups include a single tip, the parent node of the tip's subtending branch is used. Requires group object to be provided by user.. If VERBOSE is TRUE, model information will be printed during computation, including time limits imposed on Dmax.t if the conservative option is chosen.}
 }
 \value{
 A list of the following components:
@@ -35,29 +45,44 @@ sim.path a list of dataframes as in meas.path, but obtained using simulated data
 grp.mean a matrix of Ct-metrics summarized for inter-group comparisons, returned only if user defined groups were specified. Provides overall results matching those reported in "mean", results for each unique inter-group comparison, and results averaged with equal weight given to each unique inter-group comparison (i.e., ignoring differences in the number of tips in each group).
 
 grp.pvals a matrix of p-values associated with Ct values in grp.mean object. Returned only if user defined groups were specified.
+
+limits a list of tree heights used to constrain Dmax.t calculations for each pairwise comparison in conservative analyses. Only returned if conservative == TRUE.
 }
 \description{
-convSigCt Computes and conducts significance tests on Ct-metric scores for putatively convergent tips (or groups of tips) given a set of user provided phenotypic characters and a time calibrated phylogeny.
+calcConvCt Computes and conducts significance tests on Ct-metric scores for putatively convergent tips (or groups of tips) given a set of user provided phenotypic characters and a time calibrated phylogeny.
 }
 \details{
 Function incorporates the optimizations introduced by Zelditch et al. (2017), which significantly improve runtimes
 
-Reconstructions part way along branches are obtained using equation [2] of Felsenstein (1985), following code modified from the phytools (Revell, 2012) function contMap
+Reconstructions part way along branches are obtained using equation 2 of Felsenstein (1985), following code modified from the phytools (Revell, 2012) function contMap
 }
 \examples{
+\dontrun{
+library(phytools)
+library(geiger)
 
-\donttest{# create time calibrated tree
-mytree<-rtree(50)
+# create time calibrated tree
+mytree<-rtree(100)
 mycalibration <- makeChronosCalib(mytree, node="root", age.max=50)
-phy <- chronos(mytree, calibration = mycalibration, control = chronos.control() )
+phy <- chronos(mytree, lambda = 1, model = "correlated", calibration = mycalibration, 
+control = chronos.control() )
 class(phy)<-"phylo"
 
 # create three normally distributed phenotypic traits
 traits <- cbind(rnorm(Ntip(phy)),rnorm(Ntip(phy)),rnorm(Ntip(phy)))
 rownames(traits) <- phy$tip.label
-focaltaxa <- sample(phy$tip.label, 5)
 
-system.time(run2 <- convSigCt(phy, traits, focaltaxa, nsim=10))}
+#	select two random tips, excluding sister taxa
+pairs <- apply(combn(phy$tip.label,2),2,function(x) nodepath(phy,which(phy$tip.label == x[1]),
+which(phy$tip.label == x[2])))
+nosis <- combn(phy$tip.label,2)[,unlist(lapply(pairs, function(x) length(x) > 3))]
+focaltaxa <- nosis[,sample(1:ncol(nosis),1)]
+
+system.time(run <- calcConvCt(phy, traits, focaltaxa))
+system.time(run2 <- convSigCt(phy, traits, focaltaxa, nsim=100))
+
+plotCt(output = run2,phy = phy,focaltaxa = focaltaxa)
+}
 }
 \references{
 Grossnickle DM, Brightly WH, Weaver LN, Stanchak KE, Roston RA, Pevsner SK, Stayton CT, Polly PD, Law CJ. 2022. A cautionary note on quantitative measures of phenotypic convergence. in revision

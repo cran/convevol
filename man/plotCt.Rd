@@ -40,6 +40,20 @@ plotCt Plots calcConv or convSig output.
 Creates a plot that shows the phenotypic distances between pairs of putatively convergent lineages over time. When these distances decrease, convergence has occurred. When more than two putatively
 convergent taxa are analyzed, all pairs are plotted.
 }
+\examples{
+
+\donttest{#' create time calibrated tree
+phy<-rcoal(100)
+
+# create three normally distributed phenotypic traits
+traits <- cbind(rnorm(Ntip(phy)),rnorm(Ntip(phy)),rnorm(Ntip(phy)))
+rownames(traits) <- phy$tip.label
+focaltaxa <- sample(phy$tip.label, 5)
+
+system.time(run2 <- convSigCt(phy, traits, focaltaxa, nsim=10))
+
+plotCt(output = run2,phy = phy,focaltaxa = focaltaxa)}
+}
 \references{
 Grossnickle DM, Brightly WH, Weaver LN, Stanchak KE, Roston RA, Pevsner SK, Stayton CT, Polly PD, Law CJ. 2022. A cautionary note on quantitative measures of phenotypic convergence. in revision
 Zelditch ML, Ye J, Mitchell JS, Swiderski DL. 2017. Rare ecomorphological convergence on a complex adaptive landscape: Body size and diet mediate evolution of jaw shape in squirrels (Sciuridae). Evolution 71: 633-649

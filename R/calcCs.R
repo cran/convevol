@@ -25,7 +25,7 @@
 #'
 #'@return C1-C4 convergence measures for all pairs of putatively convergent taxa.
 #'
-#'@import MASS phytools
+#'@import phytools
 #'
 #'@export
 #'

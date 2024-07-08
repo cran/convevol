@@ -32,6 +32,6 @@ ancs<-multianc(phy,phendata)
 Paradis, E., J. Claude, and K. Strimmer (2004) APE: Analyses of phylogenetics
 and evolution in R langauge. Bioinformatics, 20, 289-290.
 
-Revell, L. J. (2012) phytools: An R package for phylogenetic comparative 
+Revell, L. J. (2012) phytools: An R package for phylogenetic comparative
 biology (and other things). Methods Ecol. Evol. 3 217-223.
 }
