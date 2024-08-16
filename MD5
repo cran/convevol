@@ -1,4 +1,4 @@
-e31afd5dcfc5eb78438f1ef6f26f7632 *DESCRIPTION
+e989f8c9e49d43e892ff612a5cb2c4a9 *DESCRIPTION
 38a0997751a4753383b791c3d0e9f224 *NAMESPACE
 5a800f47a38b0cbb27205e35a80d62a5 *R/allmaxdist.R
 d68e28273f8132edb44e881b48dcf950 *R/ancestrallineages.R
@@ -24,8 +24,11 @@ beda0560e96f8cf7209c7685eebfb6d0 *R/plotCt.r
 d180998b2fdd63ca86346934b541fe5d *R/pullNodeSeq.R
 197505bbf5ec6a151952fa241e624286 *R/pwCheck.R
 605c88306470ad9422e9533da4362c75 *R/trait.r
+3b8b1cdab1182753a1871a33b7982374 *build/vignette.rds
 826321a86cfd0682dfe1fa8116485b4d *data/phy.rda
 b8a60d55ae7614aa4a321c938fd867af *data/trait.rda
+e2812a12f80f95aca833f85b29bf53da *inst/doc/TM_Tutorial_v5.pdf
+950bdbc89e5fc5a2077c78878f1e9e00 *inst/doc/TM_Tutorial_v5.pdf.asis
 760e28e0dc5ce2e0aff2857094aad881 *man/allmaxdist.Rd
 0f2f905f2061f04a2f8d1e73bfbba83d *man/ancestrallineages.Rd
 7c549291c8a17c8b795f116e407bc027 *man/calcConv.Rd
@@ -50,3 +53,5 @@ f81e0d740d14a0d0eb53c3b923a135cf *man/plotellipse.Rd
 e23af276fd054f184c783248656ce671 *man/pullNodeSeq.Rd
 30ff471ec82cd2ce635cded34506be4c *man/pwCheck.Rd
 71c6516016d8fa625442ba510daaa3ec *man/trait.Rd
+950bdbc89e5fc5a2077c78878f1e9e00 *vignettes/TM_Tutorial_v5.pdf.asis
+9226210b38c5685abddd1b9026cdf06d *vignettes/Thumbs.db
